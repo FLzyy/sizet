@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/strict-boolean-expressions */
 /* eslint-disable @typescript-eslint/no-unnecessary-type-assertion */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 
 import { execSync } from "child_process";
 import { dirSize } from "./utils/size.js";
-import { mkdtempSync, rmSync } from "fs";
+import { mkdtempSync, rmSync, writeFileSync } from "fs";
 import { Options, Sizes } from "./types/index.js";
 
 export const npmPackageRegex =
@@ -13,10 +14,18 @@ export const remote = async (
   name: string,
   options?: Options
 ): Promise<Sizes> => {
-  const { output, tempDir } = options ?? { output: false, tempDir: "temp" };
+  const { output, tempDir, cwd } = options ?? {
+    output: false,
+    tempDir: "temp",
+    cwd: false,
+  };
 
   if (!npmPackageRegex.test(name)) {
     throw new Error("Invalid Package Name");
+  }
+
+  if (cwd) {
+    process.chdir(cwd);
   }
 
   const dir = mkdtempSync(tempDir!);
@@ -32,9 +41,15 @@ export const remote = async (
 
   rmSync(dir, { recursive: true, force: true });
 
-  return {
+  const final = {
     min: 0,
     minzip: 0,
     unpacked,
   };
+
+  if (output) {
+    writeFileSync(output, JSON.stringify(final));
+  }
+
+  return final;
 };
