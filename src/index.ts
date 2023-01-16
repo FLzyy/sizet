@@ -10,10 +10,7 @@ import { Options, Sizes } from "./types/index.js";
 export const npmPackageRegex =
   /^(@[a-z0-9-~][a-z0-9-._~]*\/)?[a-z0-9-~][a-z0-9-._~]*@[~^]?([\dvx*]+(?:[-.](?:[\dx*]+|alpha|beta))*|latest)$/gm;
 
-export const remote = async (
-  name: string,
-  options?: Options
-): Promise<Sizes> => {
+export const remote = (name: string, options?: Options): Sizes => {
   const { output, tempDir, cwd } = options ?? {};
 
   if (!npmPackageRegex.test(name)) {
@@ -31,7 +28,7 @@ export const remote = async (
   execSync("npm init -y");
   execSync(`npm i ${name}`);
 
-  const unpacked = await dirSize("node_modules", [".package-lock.json"]);
+  const unpacked = dirSize("node_modules", [".package-lock.json"]);
 
   process.chdir("..");
 
