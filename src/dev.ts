@@ -1,5 +1,3 @@
-/**
- * Dev file:
- *
- * Use this to manually test `index.ts`
- */
+import { remote } from "./index.js";
+
+console.log(await remote("react@latest"));

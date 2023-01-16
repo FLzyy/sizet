@@ -1,11 +1,19 @@
+/* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import { readdir, stat } from "fs/promises";
 import { join } from "path";
 
-export const dirSize = async (dir: string): Promise<number> => {
+export const dirSize = async (
+  dir: string,
+  exclude?: string[],
+): Promise<number> => {
   const files = await readdir(dir, { withFileTypes: true });
 
   const paths = files.map(async (file) => {
     const path = join(dir, file.name);
+
+    if (exclude?.includes(file.name)) {
+      return 0;
+    }
 
     if (file.isDirectory()) return await dirSize(path);
 
