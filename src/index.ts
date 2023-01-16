@@ -14,11 +14,7 @@ export const remote = async (
   name: string,
   options?: Options
 ): Promise<Sizes> => {
-  const { output, tempDir, cwd } = options ?? {
-    output: false,
-    tempDir: "temp",
-    cwd: false,
-  };
+  const { output, tempDir, cwd } = options ?? {};
 
   if (!npmPackageRegex.test(name)) {
     throw new Error("Invalid Package Name");
@@ -28,7 +24,7 @@ export const remote = async (
     process.chdir(cwd);
   }
 
-  const dir = mkdtempSync(tempDir!);
+  const dir = mkdtempSync(tempDir ?? "temp");
 
   process.chdir(dir);
 
