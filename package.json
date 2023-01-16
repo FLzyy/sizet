@@ -1,10 +1,9 @@
 {
   "name": "sizet",
   "version": "1.0.0",
-  "description": "A CLI tool to calculate the size of an NPM package",
+  "description": "Easily calculate the size of an NPM package",
   "main": "index.js",
   "type": "module",
-  "bin": "bin/index.js",
   "scripts": {
     "compile": "npx swc src/index.ts -d dist --config-file .swcrc",
     "clean": "rmdir /Q /S dist",
