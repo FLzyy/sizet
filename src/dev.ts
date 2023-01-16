@@ -1,3 +1,7 @@
-import { local } from "./index.js";
+import { remote } from "./index.js";
 
-console.log(local("semver"));
+console.log(
+  remote("chalk@latest", {
+    tempDir: "test",
+  })
+);
