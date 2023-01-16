@@ -121,6 +121,10 @@ export const local = (src: string, options?: Options): Sizes => {
       readdirSync("../").filter((value) => extname(value) === ".tgz")[0]
     );
 
+  rmSync("node_modules");
+  rmSync("package-lock.json");
+  process.chdir("..");
+
   const final = {
     unpacked,
     tarGzipped,
