@@ -1,21 +1,27 @@
-import { readdirSync, statSync } from "fs";
+import { readdirSync } from "fs";
 import { join } from "path";
 
 export const allFiles = (dir: string): string[] => {
-  let files: string[] = [];
-  const initial = readdirSync(dir);
+  const initial = readdirSync(dir, { withFileTypes: true });
+  const folders = [
+    ...initial.map((value) =>
+      value.isDirectory()
+        ? allFiles(join(dir, value.name))
+        : join(dir, value.name)
+    ),
+  ];
 
-  for (let i = 0; i < initial.length; i++) {
-    const current = initial[i];
-    const path = join(dir, current);
-    const stats = statSync(path);
+  return folders.flat(9007199254740991);
+};
 
-    if (stats.isDirectory()) {
-      files = [...files, ...allFiles(path)];
-    } else if (stats.isFile()) {
-      files.push(path);
-    }
-  }
+export const allFolders = (dir: string): string[] => {
+  const initial = readdirSync(dir, { withFileTypes: true }).filter((value) =>
+    value.isDirectory()
+  );
+  const folders = [
+    ...initial.map((value) => join(dir, value.name)),
+    ...initial.map((value) => allFolders(join(dir, value.name))),
+  ];
 
-  return files;
+  return folders.flat(9007199254740991);
 };
