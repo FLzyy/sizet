@@ -17,9 +17,9 @@ npx sizet@latest dist/
 ## Programmatic Usage
 
 ```js
-import { package, local } from "sizet";
+import { remote, local } from "sizet";
 
-package("react@latest");
+remote("react@latest");
 
 local("dist/");
 ```
