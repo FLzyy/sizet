@@ -1,3 +1,25 @@
-# npm-boilerplate
+# Sizet
 
-My personal boilerplate for making NPM packages
+A CLI tool to calculate the size of an NPM package
+
+## Basic Usage
+
+```sh
+npx sizet@latest
+```
+
+You can also use a local folder with a package.json:
+
+```sh
+npx sizet@latest dist/
+```
+
+## Programmatic Usage
+
+```js
+import { package, local } from "sizet";
+
+package("react@latest");
+
+local("dist/");
+```
