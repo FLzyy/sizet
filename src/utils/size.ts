@@ -2,7 +2,7 @@
 import { readdir, stat } from "fs/promises";
 import { join } from "path";
 import { minifySync } from "@swc/core";
-import { readFileSync, writeFileSync } from "fs";
+import { readFileSync, rmSync, writeFileSync } from "fs";
 
 export const dirSize = async (
   dir: string,
@@ -48,5 +48,9 @@ export const minifiedSized = async (file: string): Promise<number> => {
     }).code
   );
 
-  return await fileSize(`${file}min`);
+  const size = await fileSize(`${file}min`);
+
+  rmSync(`./${file}min`);
+
+  return size;
 };
