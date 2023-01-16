@@ -13,7 +13,7 @@ export const npmPackageRegex =
   /^(@[a-z0-9-~][a-z0-9-._~]*\/)?[a-z0-9-~][a-z0-9-._~]*@[~^]?([\dvx*]+(?:[-.](?:[\dx*]+|alpha|beta))*|latest)$/gm;
 
 export const remote = (name: string, options?: Options): Sizes => {
-  const { output, tempDir, cwd, verbose } = options ?? {};
+  const { output, tempDir, verbose } = options ?? {};
 
   const config: ExecSyncOptions = verbose
     ? { stdio: "pipe" }
@@ -21,10 +21,6 @@ export const remote = (name: string, options?: Options): Sizes => {
 
   if (!npmPackageRegex.test(name)) {
     throw new Error("Invalid Package Name");
-  }
-
-  if (cwd) {
-    process.chdir(cwd);
   }
 
   const dir = mkdtempSync(tempDir ?? "temp");
@@ -64,14 +60,71 @@ export const remote = (name: string, options?: Options): Sizes => {
 
   rmSync(dir, { recursive: true, force: true });
 
-  if (cwd) {
-    process.chdir("..");
-  }
-
   const final = {
     min,
     tarGzipped,
     unpacked,
+  };
+
+  if (output) {
+    writeFileSync(output, JSON.stringify(final, null, "\t"));
+  }
+
+  return final;
+};
+
+export const local = (src: string, options?: Options): Sizes => {
+  const { output, verbose } = options ?? {};
+
+  const config: ExecSyncOptions = verbose
+    ? { stdio: "pipe" }
+    : { stdio: "ignore" };
+
+  process.chdir(src);
+
+  execSync("npm i", config);
+
+  process.chdir("..");
+
+  const unpacked = dirSize(src, [".package-lock.json", "package-lock.json"]);
+
+  const min = allFiles(src)
+    .filter((value) => value.endsWith(".js"))
+    .reduce((acc, cur) => acc + minifiedSized(cur), 0);
+
+  execSync(`npm pack`, config);
+  process.chdir(src);
+
+  const minzipp = allFolders("node_modules").filter((value) =>
+    readdirSync(value).includes("package.json")
+  );
+
+  for (let i = 0; i < minzipp.length; i++) {
+    const current = minzipp[i];
+
+    execSync(`cd ${current} && npm pack`, config);
+  }
+
+  const tarGzipped =
+    minzipp.reduce(
+      (acc, curr) =>
+        acc +
+        fileSize(
+          join(
+            curr,
+            readdirSync(curr).filter((value) => extname(value) === ".tgz")[0]
+          )
+        ),
+      0
+    ) +
+    fileSize(
+      readdirSync("../").filter((value) => extname(value) === ".tgz")[0]
+    );
+
+  const final = {
+    unpacked,
+    tarGzipped,
+    min,
   };
 
   if (output) {
