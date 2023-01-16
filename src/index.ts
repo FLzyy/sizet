@@ -35,6 +35,10 @@ export const remote = async (
 
   process.chdir("..");
 
+  if (cwd) {
+    process.chdir("..");
+  }
+
   rmSync(dir, { recursive: true, force: true });
 
   const final = {

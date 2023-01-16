@@ -3,8 +3,9 @@ import { allFiles } from "./utils/fs.js";
 
 console.log(
   await remote("react@latest", {
+    cwd: "src/",
     tempDir: "test",
   })
 );
 
-console.log(allFiles(process.cwd()));
+console.log(allFiles("src/"));
