@@ -44,7 +44,7 @@ export const remote = async (
   };
 
   if (output) {
-    writeFileSync(output, JSON.stringify(final));
+    writeFileSync(output, JSON.stringify(final, null, "/t"));
   }
 
   return final;
