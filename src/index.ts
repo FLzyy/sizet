@@ -92,8 +92,8 @@ export const local = (src: string, options?: Options): Sizes => {
     .filter((value) => value.endsWith(".js"))
     .reduce((acc, cur) => acc + minifiedSized(cur), 0);
 
-  execSync(`npm pack`, config);
   process.chdir(src);
+  execSync(`npm pack`, config);
 
   const minzipp = allFolders("node_modules").filter((value) =>
     readdirSync(value).includes("package.json")
@@ -117,11 +117,10 @@ export const local = (src: string, options?: Options): Sizes => {
         ),
       0
     ) +
-    fileSize(
-      readdirSync("../").filter((value) => extname(value) === ".tgz")[0]
-    );
+    fileSize(readdirSync("./").filter((value) => extname(value) === ".tgz")[0]);
 
-  rmSync("node_modules");
+  rmSync("node_modules", { recursive: true, force: true });
+  rmSync(readdirSync("./").filter((value) => extname(value) === ".tgz")[0]);
   rmSync("package-lock.json");
   process.chdir("..");
 
