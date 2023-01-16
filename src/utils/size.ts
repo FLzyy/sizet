@@ -39,7 +39,7 @@ export const fileSize = async (file: string): Promise<number> => {
 
 export const minifiedSized = async (file: string): Promise<number> => {
   writeFileSync(
-    `./${file}min`,
+    `${file}min`,
     minifySync(readFileSync(file, "utf-8"), {
       module: true,
       ecma: 2017,
@@ -50,7 +50,7 @@ export const minifiedSized = async (file: string): Promise<number> => {
 
   const size = await fileSize(`${file}min`);
 
-  rmSync(`./${file}min`);
+  rmSync(`${file}min`);
 
   return size;
 };
