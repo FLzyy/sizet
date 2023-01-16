@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "description": "npm-package description",
   "main": "index.js",
+  "type": "module",
+  "bin": "bin/index.js",
   "scripts": {
     "compile": "npx swc src/index.ts -d dist --config-file .swcrc",
     "clean": "rmdir /Q /S dist",
