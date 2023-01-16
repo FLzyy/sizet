@@ -30,10 +30,9 @@ export const remote = (name: string, options?: Options): Sizes => {
   execSync(`npm i ${name}`);
 
   const unpacked = dirSize("node_modules", [".package-lock.json"]);
-  const min = allFiles("node_modules").reduce(
-    (acc, cur) => acc + minifiedSized(cur),
-    0
-  );
+  const min = allFiles("node_modules")
+    .filter((value) => value.endsWith(".js"))
+    .reduce((acc, cur) => acc + minifiedSized(cur), 0);
 
   process.chdir("..");
 
