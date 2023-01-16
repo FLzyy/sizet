@@ -1,5 +1,4 @@
 import { remote } from "./index.js";
-import { allFiles } from "./utils/fs.js";
 
 console.log(
   remote("react@latest", {
@@ -7,5 +6,3 @@ console.log(
     tempDir: "test",
   })
 );
-
-console.log(allFiles("src/"));
