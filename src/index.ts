@@ -3,7 +3,8 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 
 import { execSync } from "child_process";
-import { dirSize } from "./utils/size.js";
+import { dirSize, minifiedSized } from "./utils/size.js";
+import { allFiles } from "./utils/fs.js";
 import { mkdtempSync, rmSync, writeFileSync } from "fs";
 import { Options, Sizes } from "./types/index.js";
 
@@ -29,17 +30,21 @@ export const remote = (name: string, options?: Options): Sizes => {
   execSync(`npm i ${name}`);
 
   const unpacked = dirSize("node_modules", [".package-lock.json"]);
+  const min = allFiles("node_modules").reduce(
+    (acc, cur) => acc + minifiedSized(cur),
+    0
+  );
 
   process.chdir("..");
+
+  rmSync(dir, { recursive: true, force: true });
 
   if (cwd) {
     process.chdir("..");
   }
 
-  rmSync(dir, { recursive: true, force: true });
-
   const final = {
-    min: 0,
+    min,
     minzip: 0,
     unpacked,
   };
