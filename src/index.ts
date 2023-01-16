@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-type-assertion */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 
-import { execSync } from "child_process";
+import { execSync, ExecSyncOptions } from "child_process";
 import { dirSize, fileSize, minifiedSized } from "./utils/size.js";
 import { allFiles, allFolders } from "./utils/fs.js";
 import { mkdtempSync, readdirSync, rmSync, writeFileSync } from "fs";
@@ -13,7 +13,11 @@ export const npmPackageRegex =
   /^(@[a-z0-9-~][a-z0-9-._~]*\/)?[a-z0-9-~][a-z0-9-._~]*@[~^]?([\dvx*]+(?:[-.](?:[\dx*]+|alpha|beta))*|latest)$/gm;
 
 export const remote = (name: string, options?: Options): Sizes => {
-  const { output, tempDir, cwd } = options ?? {};
+  const { output, tempDir, cwd, verbose } = options ?? {};
+
+  const config: ExecSyncOptions = verbose
+    ? { stdio: "pipe" }
+    : { stdio: "ignore" };
 
   if (!npmPackageRegex.test(name)) {
     throw new Error("Invalid Package Name");
@@ -27,12 +31,8 @@ export const remote = (name: string, options?: Options): Sizes => {
 
   process.chdir(dir);
 
-  execSync("npm init -y", {
-    stdio: "ignore",
-  });
-  execSync(`npm i ${name}`, {
-    stdio: "ignore",
-  });
+  execSync("npm init -y", config);
+  execSync(`npm i ${name}`, config);
 
   const unpacked = dirSize("node_modules", [".package-lock.json"]);
   const min = allFiles("node_modules")
@@ -45,9 +45,7 @@ export const remote = (name: string, options?: Options): Sizes => {
   for (let i = 0; i < minzipp.length; i++) {
     const current = minzipp[i];
 
-    execSync(`cd ${current} && npm pack`, {
-      stdio: "ignore",
-    });
+    execSync(`cd ${current} && npm pack`, config);
   }
 
   const tarGzipped = minzipp.reduce(

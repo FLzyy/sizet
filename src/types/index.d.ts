@@ -2,6 +2,7 @@ export interface Options {
   tempDir?: string;
   output?: string | false;
   cwd?: string | false;
+  verbose?: boolean;
 }
 
 export interface Sizes {
