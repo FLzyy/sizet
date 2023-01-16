@@ -5,7 +5,7 @@ export interface Options {
 }
 
 export interface Sizes {
-  minzip: number;
+  tarGzipped: number;
   min: number;
   unpacked: number;
 }
