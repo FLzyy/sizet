@@ -28,7 +28,7 @@ export const remote = (name: string, options?: Options): Sizes => {
   process.chdir(dir);
 
   execSync("npm init -y", config);
-  execSync(`npm i ${name}`, config);
+  execSync(`npm i ${name} --omit=dev`, config);
 
   const unpacked = dirSize("node_modules", [".package-lock.json"]);
   const min = allFiles("node_modules")
@@ -82,7 +82,7 @@ export const local = (src: string, options?: Options): Sizes => {
 
   process.chdir(src);
 
-  execSync("npm i", config);
+  execSync("npm i --omit=dev", config);
 
   process.chdir("..");
 
