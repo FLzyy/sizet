@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "compile": "npx swc src/index.ts -d dist --config-file .swcrc",
+    "compile": "npx swc src/index.ts src/utils/ -d dist --config-file .swcrc",
     "clean": "rmdir /Q /S dist",
     "build": "npm run compile && node scripts/build.js",
     "dev": "tsx src/dev.ts",
