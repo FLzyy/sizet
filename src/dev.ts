@@ -1,3 +1,3 @@
-import { remote, local } from "./index.js";
+import { local } from "./index.js";
 
 console.log(local("semver"));
