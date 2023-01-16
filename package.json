@@ -21,11 +21,11 @@
     "url": "git+https://github.com/FLzyy/sizet.git"
   },
   "keywords": [
-    "key",
-    "w",
-    "o",
-    "r",
-    "d"
+    "size",
+    "kb",
+    "kilobytes",
+    "limit",
+    "performance"
   ],
   "author": "FLzyy",
   "license": "MIT",
