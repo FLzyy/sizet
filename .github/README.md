@@ -33,10 +33,6 @@ local("dist/");
 
 ## API
 
-### `npmPackageRegex`
-
-A helper constant that holds the regex for validating npm package names, currently must include a version tag.
-
 #### Example:
 
 ```js
@@ -62,8 +58,6 @@ Interface for valid options that can be passed to both [`remote()`](#remote) and
   // if defined it outputs JSON to the string path, false by default.
   verbose?: boolean
   // Whether or not to pipe stdio of shell commands made by the module, false by default.
-  force?: boolean
-  // If true, it will not check if the NPM package name is valid according to the regex.
 }
 ```
 
@@ -73,7 +67,7 @@ A function that calculates the size of an NPM package hosted on the NPM registry
 
 #### Arguments
 
-- name: `string` - The name of the NPM package, must include a valid version number/tag. [See npmPackageRegex](#npmpackageregex)
+- name: `string` - The name of the NPM package.
 - options (**?**): [`Options`](#options) - Options.
 
 #### Example
