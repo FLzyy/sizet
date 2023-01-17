@@ -105,6 +105,23 @@ Interface for valid options that can be passed to both [`remote()`](#remote) and
 }
 ```
 
+### `Final`
+
+The output of both [`remote()`](#remote) and [`local()`](#local).
+
+**_All values are in bytes_**
+
+```ts
+{
+  min: number;
+  // Size of package and it's dependencies after minifying code.
+  tarGzipped: number;
+  // Size of package and it's dependencies after it's tarred and gzipped by `npm pack`.
+  unpacked: number;
+  // The raw size of the the package and it's dependencies.
+}
+```
+
 ## Other tools
 
 - `sizet-cli` - **TO-DO** CLI tool to enable usage of sizet in the commandline
