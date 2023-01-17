@@ -1,6 +1,6 @@
 {
   "name": "sizet",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Easily calculate the size of an NPM package",
   "main": "index.js",
   "type": "module",
