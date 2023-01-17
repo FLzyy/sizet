@@ -119,4 +119,4 @@ The output of both [`remote()`](#remote) and [`local()`](#local).
 
 ## Other tools
 
-- `sizet-cli` - **TO-DO** CLI tool to enable usage of sizet in the commandline
+- [**sizet-cli**](https://github.com/FLzyy/sizet-cli) - CLI tool to enable usage of sizet in the command line
