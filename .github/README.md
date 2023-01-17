@@ -27,9 +27,8 @@ local("dist/");
 
 1. Install all production dependencies of the package.
 2. Calculate size of node_modules and use that for `unpacked`
-3. Minify all javascript using `@swc/core` and use that for `min`
-4. Use `npm pack` to get the tarred and gzipped file of the package and it's dependencies, use it for `tarGzipped`
-5. Return the values
+3. Use `npm pack` to get the tarred and gzipped file of the package and it's dependencies, use it for `tarGzipped`
+4. Return the values
 
 ## API
 
@@ -51,7 +50,6 @@ remote("chalk@latest");
 
 /**
  * {
- *  min: 7707,
  *  tarGzipped: 13351,
  *  unpacked: 43568
  * }
@@ -83,7 +81,6 @@ local("dist/"); // or "dist"
 
 /**
  * {
- *  min: 7707,
  *  tarGzipped: 13351,
  *  unpacked: 43568
  * }
@@ -113,11 +110,9 @@ The output of both [`remote()`](#remote) and [`local()`](#local).
 
 ```ts
 {
-  min: number
-  // Size of package and it's dependencies after minifying code.
-  tarGzipped: number
+  tarGzipped: number;
   // Size of package and it's dependencies after it's tarred and gzipped by `npm pack`.
-  unpacked: number
+  unpacked: number;
   // The raw size of the the package and it's dependencies.
 }
 ```
