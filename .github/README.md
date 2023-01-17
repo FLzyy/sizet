@@ -47,7 +47,7 @@ npmPackageRegex.test("React@latest"); // false
 npmPackageRegex.test("react@laest"); // false
 npmPackageRegex.test("react+latest"); // false
 npmPackageRegex.test("react@13.0.3"); // true
-npmPackageRegex.test("react@2.2.0.beta"); // true
+npmPackageRegex.test("react@2.2.0-beta"); // true
 ```
 
 ### `Options`
@@ -56,12 +56,14 @@ Interface for valid options that can be passed to both [`remote()`](#remote) and
 
 ```ts
 {
-  tempDir?: string;
+  tempDir?: string
   // The prefix used for the temp folder, "temp" by default.
-  output?: string | false;
+  output?: string | false
   // if defined it outputs JSON to the string path, false by default.
-  verbose?: boolean;
+  verbose?: boolean
   // Whether or not to pipe stdio of shell commands made by the module, false by default.
+  force?: boolean
+  // If true, it will not check if the NPM package name is valid according to the regex.
 }
 ```
 
