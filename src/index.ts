@@ -13,13 +13,13 @@ export const npmPackageRegex =
   /^(@[a-z0-9-~][a-z0-9-._~]*\/)?[a-z0-9-~][a-z0-9-._~]*@[~^]?([\dvx*]+(?:[-.](?:[\dx*]+|alpha|beta))*|latest)$/gm;
 
 export const remote = (name: string, options?: Options): Sizes => {
-  const { output, tempDir, verbose } = options ?? {};
+  const { output, tempDir, verbose, force } = options ?? {};
 
   const config: ExecSyncOptions = verbose
     ? { stdio: "pipe" }
     : { stdio: "ignore" };
 
-  if (!npmPackageRegex.test(name)) {
+  if (!npmPackageRegex.test(name) && !force) {
     throw new Error("Invalid Package Name");
   }
 
