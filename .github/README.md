@@ -61,7 +61,7 @@ Interface for valid options that can be passed to both [`remote()`](#remote) and
 }
 ```
 
-### `remote()`
+### `remote(name: string, options?: Options)`
 
 A function that calculates the size of an NPM package hosted on the NPM registry.
 
@@ -86,7 +86,7 @@ remote("chalk@latest");
  */
 ```
 
-### `local()`
+### `local(src: string, options?: Options)`
 
 A function that calculates the size of an NPM package locally.
 
