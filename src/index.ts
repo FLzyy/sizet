@@ -9,19 +9,12 @@ import { mkdtempSync, readdirSync, rmSync, writeFileSync } from "fs";
 import { Options, Sizes } from "./types/index.js";
 import { extname, join } from "path";
 
-export const npmPackageRegex =
-  /^(@[a-z0-9-~][a-z0-9-._~]*\/)?[a-z0-9-~][a-z0-9-._~]*@[~^]?([\dvx*]+(?:[-.](?:[\dx*]+|alpha|beta))*|latest)$/gm;
-
 export const remote = (name: string, options?: Options): Sizes => {
-  const { output, tempDir, verbose, force } = options ?? {};
+  const { output, tempDir, verbose } = options ?? {};
 
   const config: ExecSyncOptions = verbose
     ? { stdio: "pipe" }
     : { stdio: "ignore" };
-
-  if (!npmPackageRegex.test(name) && !force) {
-    throw new Error("Invalid Package Name");
-  }
 
   const dir = mkdtempSync(tempDir ?? "temp");
 
