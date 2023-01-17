@@ -88,7 +88,7 @@ remote("chalk@latest");
 
 ### `local()`
 
-A function that calculates the size of an NPM package hosted on the NPM registry.
+A function that calculates the size of an NPM package locally.
 
 #### Arguments
 
