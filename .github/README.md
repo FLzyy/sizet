@@ -33,34 +33,6 @@ local("dist/");
 
 ## API
 
-#### Example:
-
-```js
-import { npmPackageRegex } from "sizet";
-
-npmPackageRegex.test("react@latest"); // true
-npmPackageRegex.test("React@latest"); // false
-npmPackageRegex.test("react@laest"); // false
-npmPackageRegex.test("react+latest"); // false
-npmPackageRegex.test("react@13.0.3"); // true
-npmPackageRegex.test("react@2.2.0-beta"); // true
-```
-
-### `Options`
-
-Interface for valid options that can be passed to both [`remote()`](#remote) and [`local()`](#local).
-
-```ts
-{
-  tempDir?: string
-  // The prefix used for the temp folder, "temp" by default.
-  output?: string | false
-  // if defined it outputs JSON to the string path, false by default.
-  verbose?: boolean
-  // Whether or not to pipe stdio of shell commands made by the module, false by default.
-}
-```
-
 ### `remote(name: string, options?: Options)`
 
 A function that calculates the size of an NPM package hosted on the NPM registry.
@@ -116,6 +88,21 @@ local("dist/"); // or "dist"
  *  unpacked: 43568
  * }
  */
+```
+
+### `Options`
+
+Interface for valid options that can be passed to both [`remote()`](#remote) and [`local()`](#local).
+
+```ts
+{
+  tempDir?: string
+  // The prefix used for the temp folder, "temp" by default.
+  output?: string | false
+  // if defined it outputs JSON to the string path, false by default.
+  verbose?: boolean
+  // Whether or not to pipe stdio of shell commands made by the module, false by default.
+}
 ```
 
 ## Other tools
