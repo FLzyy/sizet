@@ -113,11 +113,11 @@ The output of both [`remote()`](#remote) and [`local()`](#local).
 
 ```ts
 {
-  min: number;
+  min: number
   // Size of package and it's dependencies after minifying code.
-  tarGzipped: number;
+  tarGzipped: number
   // Size of package and it's dependencies after it's tarred and gzipped by `npm pack`.
-  unpacked: number;
+  unpacked: number
   // The raw size of the the package and it's dependencies.
 }
 ```
