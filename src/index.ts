@@ -3,8 +3,8 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 
 import { execSync, ExecSyncOptions } from "child_process";
-import { dirSize, fileSize, minifiedSized } from "./utils/size.js";
-import { allFiles, allFolders } from "./utils/fs.js";
+import { dirSize, fileSize } from "./utils/size.js";
+import { allFolders } from "./utils/fs.js";
 import { mkdtempSync, readdirSync, rmSync, writeFileSync } from "fs";
 import { Options, Sizes } from "./types/index.js";
 import { extname, join } from "path";
@@ -24,9 +24,6 @@ export const remote = (name: string, options?: Options): Sizes => {
   execSync(`npm i ${name} --omit=dev`, config);
 
   const unpacked = dirSize("node_modules", [".package-lock.json"]);
-  const min = allFiles("node_modules")
-    .filter((value) => value.endsWith(".js"))
-    .reduce((acc, cur) => acc + minifiedSized(cur), 0);
   const minzipp = allFolders("node_modules").filter((value) =>
     readdirSync(value).includes("package.json")
   );
@@ -54,7 +51,6 @@ export const remote = (name: string, options?: Options): Sizes => {
   rmSync(dir, { recursive: true, force: true });
 
   const final = {
-    min,
     tarGzipped,
     unpacked,
   };
@@ -80,10 +76,6 @@ export const local = (src: string, options?: Options): Sizes => {
   process.chdir("..");
 
   const unpacked = dirSize(src, [".package-lock.json", "package-lock.json"]);
-
-  const min = allFiles(src)
-    .filter((value) => value.endsWith(".js"))
-    .reduce((acc, cur) => acc + minifiedSized(cur), 0);
 
   process.chdir(src);
   execSync(`npm pack`, config);
@@ -120,7 +112,6 @@ export const local = (src: string, options?: Options): Sizes => {
   const final = {
     unpacked,
     tarGzipped,
-    min,
   };
 
   if (output) {

@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import { join } from "path";
-import { minifySync } from "@swc/core";
-import { readFileSync, rmSync, writeFileSync, readdirSync, statSync } from "fs";
+import { readdirSync, statSync } from "fs";
 
 export const dirSize = (dir: string, exclude?: string[]): number => {
   const files = readdirSync(dir, { withFileTypes: true });
@@ -29,22 +28,4 @@ export const dirSize = (dir: string, exclude?: string[]): number => {
 
 export const fileSize = (file: string): number => {
   return statSync(file).size;
-};
-
-export const minifiedSized = (file: string): number => {
-  writeFileSync(
-    `${file}min`,
-    minifySync(readFileSync(file, "utf-8"), {
-      module: true,
-      ecma: 2017,
-      compress: true,
-      mangle: true,
-    }).code
-  );
-
-  const size = fileSize(`${file}min`);
-
-  rmSync(`${file}min`);
-
-  return size;
 };
