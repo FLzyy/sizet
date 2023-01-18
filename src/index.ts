@@ -5,18 +5,19 @@
 import { execSync, ExecSyncOptions } from "child_process";
 import { dirSize, fileSize } from "./utils/size.js";
 import { allFolders } from "./utils/fs.js";
-import { mkdtempSync, readdirSync, rmSync, writeFileSync } from "fs";
+import { mkdtempSync, readdirSync, rmSync } from "fs";
 import { Options, Sizes } from "./types/index.js";
 import { extname, join } from "path";
 
 export const remote = (name: string, options?: Options): Sizes => {
-  const { output, tempDir, verbose } = options ?? {};
+  const { tempDir, verbose } = options ?? { tempDir: "temp" };
 
   const config: ExecSyncOptions = verbose
     ? { stdio: "pipe" }
     : { stdio: "ignore" };
 
-  const dir = mkdtempSync(tempDir ?? "temp");
+  // @ts-expect-error: tempDir can never be null or undefined.
+  const dir = mkdtempSync(tempDir);
 
   process.chdir(dir);
 
@@ -50,20 +51,14 @@ export const remote = (name: string, options?: Options): Sizes => {
 
   rmSync(dir, { recursive: true, force: true });
 
-  const final = {
+  return {
     tarGzipped,
     unpacked,
   };
-
-  if (output) {
-    writeFileSync(output, JSON.stringify(final, null, "\t"));
-  }
-
-  return final;
 };
 
 export const local = (src: string, options?: Options): Sizes => {
-  const { output, verbose } = options ?? {};
+  const { verbose } = options ?? {};
 
   const config: ExecSyncOptions = verbose
     ? { stdio: "pipe" }
@@ -109,14 +104,8 @@ export const local = (src: string, options?: Options): Sizes => {
   rmSync("package-lock.json");
   process.chdir("..");
 
-  const final = {
+  return {
     unpacked,
     tarGzipped,
   };
-
-  if (output) {
-    writeFileSync(output, JSON.stringify(final, null, "\t"));
-  }
-
-  return final;
 };
