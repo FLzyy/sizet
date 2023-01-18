@@ -1,4 +1,5 @@
 # Sizet
+
 [![npm version](https://img.shields.io/npm/v/sizet.svg)](https://www.npmjs.com/package/sizet)
 [![npm version](https://img.shields.io/npm/dw/sizet.svg)](https://www.npmjs.com/package/sizet)
 [![CodeFactor](https://www.codefactor.io/repository/github/flzyy/sizet/badge)](https://www.codefactor.io/repository/github/flzyy/sizet)
@@ -98,8 +99,6 @@ Interface for valid options that can be passed to both [`remote()`](#remote) and
 {
   tempDir?: string
   // The prefix used for the temp folder, "temp" by default.
-  output?: string | false
-  // if defined it outputs JSON to the string path, false by default.
   verbose?: boolean
   // Whether or not to pipe stdio of shell commands made by the module, false by default.
 }
