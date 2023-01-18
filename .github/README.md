@@ -1,4 +1,7 @@
 # Sizet
+[![npm version](https://img.shields.io/npm/v/sizet.svg)](https://www.npmjs.com/package/sizet)
+[![npm version](https://img.shields.io/npm/dw/sizet.svg)](https://www.npmjs.com/package/sizet)
+[![CodeFactor](https://www.codefactor.io/repository/github/flzyy/sizet/badge)](https://www.codefactor.io/repository/github/flzyy/sizet)
 
 Easily Calculate the size of an NPM package
 
