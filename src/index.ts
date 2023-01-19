@@ -5,7 +5,7 @@
 import { execSync, ExecSyncOptions } from "child_process";
 import { dirSize, fileSize } from "./utils/size.js";
 import { allFolders } from "./utils/fs.js";
-import { mkdtempSync, readdirSync, rmSync } from "fs";
+import { existsSync, mkdtempSync, readdirSync, rmSync } from "fs";
 import { Options, Sizes } from "./types/index.js";
 import { extname, join } from "path";
 
@@ -13,9 +13,10 @@ export const remote = (name: string, options?: Options): Sizes => {
   const { tempDir, verbose } = options ?? { tempDir: "temp" };
 
   const config: ExecSyncOptions = verbose
-    ? { stdio: "pipe" }
+    ? { stdio: [0, 1, 2] }
     : { stdio: "ignore" };
 
+  const initialDir = process.cwd();
   // @ts-expect-error: tempDir can never be null or undefined.
   const dir = mkdtempSync(tempDir);
 
@@ -25,6 +26,7 @@ export const remote = (name: string, options?: Options): Sizes => {
   execSync(`npm i ${name} --omit=dev`, config);
 
   const unpacked = dirSize("node_modules", [".package-lock.json"]);
+
   const minzipp = allFolders("node_modules").filter((value) =>
     readdirSync(value).includes("package.json")
   );
@@ -47,7 +49,7 @@ export const remote = (name: string, options?: Options): Sizes => {
     0
   );
 
-  process.chdir("..");
+  process.chdir(initialDir);
 
   rmSync(dir, { recursive: true, force: true });
 
@@ -61,32 +63,36 @@ export const local = (src: string, options?: Options): Sizes => {
   const { verbose } = options ?? {};
 
   const config: ExecSyncOptions = verbose
-    ? { stdio: "pipe" }
+    ? { stdio: [0, 1, 2] }
     : { stdio: "ignore" };
 
-  process.chdir(src);
+  const initialDir = process.cwd();
+  const dir = join(initialDir, src);
+
+  process.chdir(dir);
 
   execSync("npm i --omit=dev", config);
 
-  process.chdir("..");
+  const unpacked = dirSize("./", [".package-lock.json", "package-lock.json"]);
 
-  const unpacked = dirSize(src, [".package-lock.json", "package-lock.json"]);
-
-  process.chdir(src);
   execSync(`npm pack`, config);
 
-  const minzipp = allFolders("node_modules").filter((value) =>
-    readdirSync(value).includes("package.json")
+  let tarGzipped = fileSize(
+    readdirSync("./").filter((value) => extname(value) === ".tgz")[0]
   );
 
-  for (let i = 0; i < minzipp.length; i++) {
-    const current = minzipp[i];
+  if (existsSync("node_modules")) {
+    const minzipp = allFolders("node_modules").filter((value) =>
+      readdirSync(value).includes("package.json")
+    );
 
-    execSync(`cd ${current} && npm pack`, config);
-  }
+    for (let i = 0; i < minzipp.length; i++) {
+      const current = minzipp[i];
 
-  const tarGzipped =
-    minzipp.reduce(
+      execSync(`cd ${current} && npm pack`, config);
+    }
+
+    tarGzipped += minzipp.reduce(
       (acc, curr) =>
         acc +
         fileSize(
@@ -96,13 +102,14 @@ export const local = (src: string, options?: Options): Sizes => {
           )
         ),
       0
-    ) +
-    fileSize(readdirSync("./").filter((value) => extname(value) === ".tgz")[0]);
+    );
+  }
 
-  rmSync("node_modules", { recursive: true, force: true });
+  rmSync("node_modules", { recursive: true, force: true, maxRetries: 1 });
   rmSync(readdirSync("./").filter((value) => extname(value) === ".tgz")[0]);
   rmSync("package-lock.json");
-  process.chdir("..");
+
+  process.chdir(initialDir);
 
   return {
     unpacked,

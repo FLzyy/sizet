@@ -1,0 +1,1 @@
+import{readdirSync as r}from"fs";import{join as e}from"path";export const allFolders=t=>{let l=r(t,{withFileTypes:!0}).filter(r=>r.isDirectory()),o=[...l.map(r=>e(t,r.name)),...l.map(r=>allFolders(e(t,r.name)))];return o.flat(9007199254740991)};
