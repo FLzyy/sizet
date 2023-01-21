@@ -14,6 +14,8 @@ const inBetween = (value: number, min: number, max: number): boolean => {
 describe("Remote Packages", () => {
   const returned = remote(remotePackage);
 
+  console.log(returned);
+
   it("should return a valid object", () => {
     assert(returned.tarGzipped);
     assert(returned.unpacked);
