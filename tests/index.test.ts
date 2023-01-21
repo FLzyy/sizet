@@ -11,7 +11,7 @@ const inBetween = (value: number, min: number, max: number): boolean => {
   return value > min && value < max;
 };
 
-describe("Remote Packages", { concurrency: true }, () => {
+describe("Remote Packages", () => {
   const returned = remote(remotePackage);
 
   it("should return a valid object", () => {
@@ -35,7 +35,7 @@ describe("Remote Packages", { concurrency: true }, () => {
   });
 });
 
-describe("Local Packages", { concurrency: true }, () => {
+describe("Local Packages", () => {
   const returned = local(localPackage);
 
   it("should return a valid object", () => {
