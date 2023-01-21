@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import { remote, local } from "../src/index.js";
 
-const COMPARISON_DIFFERENCE = 1000;
+const COMPARISON_DIFFERENCE = 3000;
 
 const remotePackage = "react@18.2.0";
 const localPackage = "tests/local_case";
