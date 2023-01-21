@@ -38,8 +38,6 @@ describe("Remote Packages", { concurrency: true }, () => {
 describe("Local Packages", { concurrency: true }, () => {
   const returned = local(localPackage);
 
-  console.log(returned);
-
   it("should return a valid object", () => {
     assert(returned.tarGzipped);
     assert(returned.unpacked);
