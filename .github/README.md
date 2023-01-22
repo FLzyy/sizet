@@ -20,7 +20,7 @@ remote("react@latest");
 
 /**
  * Local is a function to calculate
- * the size of a dependency ina specific folder
+ * the size of a dependency in a specific folder
  * it also requires for the folder
  * to have a valid package.json.
  */
